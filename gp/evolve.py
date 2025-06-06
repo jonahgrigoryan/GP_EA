@@ -28,6 +28,11 @@ toolbox.decorate('mutate', gp.staticLimit(key=len, max_value=17))
 
 
 def main():
+    """
+    Runs the genetic programming evolutionary process to optimize trading rules.
+    
+    Initializes a population, evolves individuals using genetic operators for a fixed number of generations, saves the best evolved rule as a tree representation, and exports it in MQL5 format.
+    """
     pop = toolbox.population(n=200)
     hof = tools.HallOfFame(1)
     algorithms.eaSimple(pop, toolbox, 0.5, 0.2, 40, halloffame=hof, verbose=True)

@@ -5,6 +5,18 @@ from .primitives import pset
 
 
 def evaluate(individual, data):
+    """
+    Evaluates the fitness of a genetic programming individual as a trading strategy.
+    
+    The function simulates trading over the provided financial data using the individual's logic, calculates the resulting return, and applies penalties for insufficient trades, excessive drawdown, or low returns.
+    
+    Args:
+        individual: A genetic programming individual representing a trading strategy.
+        data: A pandas DataFrame containing columns 'EMA50', 'EMA200', 'RSI14', 'ATR14', and 'close'.
+    
+    Returns:
+        A tuple containing the penalized return percentage as a single float.
+    """
     func = gp.compile(expr=individual, pset=pset)
 
     balance = 10000.0
