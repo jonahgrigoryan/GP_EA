@@ -33,7 +33,7 @@ def main():
     algorithms.eaSimple(pop, toolbox, 0.5, 0.2, 40, halloffame=hof, verbose=True)
 
     best = hof[0]
-    (ROOT / 'best_tree.txt').write_text(str(best))
+    (ROOT / 'gp' / 'best_tree.txt').write_text(str(best))
     export(best, ROOT / 'mql5' / 'gp_rule.mqh')
 
 if __name__ == '__main__':
