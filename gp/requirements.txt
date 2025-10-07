@@ -1,0 +1,3 @@
+deap
+pandas
+numpy
