@@ -2,6 +2,8 @@ headersOrigin = "config"
 redirects = []
 
 [functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
 
   [functions.emails]
   included_files = [
@@ -18,7 +20,7 @@ pinned_version = "1"
   [plugins.inputs]
 
 [build]
-publish = "/Users/jonahgrigoryan/latest_deploy"
+publish = "."
 publishOrigin = "config"
 
   [build.environment]

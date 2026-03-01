@@ -223,8 +223,57 @@ function initVideoHandler() {
  */
 function initContactForm() {
     const form = document.getElementById('contact-form');
+    const includeCaptureCheckbox = document.getElementById('include-capture');
+    const launchCaptureButton = document.getElementById('launch-capture');
+    const captureStatus = document.getElementById('capture-status');
+    const captureIdInput = document.getElementById('capture-id');
+    const lengthCmInput = document.getElementById('length-cm');
+    const widthCmInput = document.getElementById('width-cm');
+    const areaCm2Input = document.getElementById('area-cm2');
 
     if (!form) return;
+
+    function updateCaptureStatus() {
+        if (!captureStatus) return;
+
+        var captureId = captureIdInput && captureIdInput.value ? captureIdInput.value.trim() : '';
+        captureStatus.textContent = captureId ? 'Capture attached.' : 'No capture attached.';
+    }
+
+    function hydrateCaptureFromQuery() {
+        var params = new URLSearchParams(window.location.search);
+        var hasCaptureParams = params.has('capture_id') ||
+            params.has('length_cm') ||
+            params.has('width_cm') ||
+            params.has('area_cm2_lxw');
+        var captureId = params.get('capture_id') || '';
+        var lengthCm = params.get('length_cm') || '';
+        var widthCm = params.get('width_cm') || '';
+        var areaCm2 = params.get('area_cm2_lxw') || '';
+
+        if (captureIdInput) captureIdInput.value = captureId;
+        if (lengthCmInput) lengthCmInput.value = lengthCm;
+        if (widthCmInput) widthCmInput.value = widthCm;
+        if (areaCm2Input) areaCm2Input.value = areaCm2;
+
+        updateCaptureStatus();
+
+        if (hasCaptureParams && window.history && typeof window.history.replaceState === 'function') {
+            window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
+        }
+    }
+
+    if (launchCaptureButton) {
+        launchCaptureButton.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            var returnUrl = window.location.origin + window.location.pathname + '#contact';
+            var deepLink = 'awcswoundcapture://start?return_url=' + encodeURIComponent(returnUrl);
+            window.location.href = deepLink;
+        });
+    }
+
+    hydrateCaptureFromQuery();
 
     // Auto-format phone number as (XXX) XXX-XXXX
     var phoneInput = document.getElementById('phone');
@@ -272,18 +321,11 @@ function initContactForm() {
             return;
         }
 
-        // File validation (optional field)
-        var fileInput = form.querySelector('input[type="file"]');
-        if (fileInput && fileInput.files.length > 0) {
-            var file = fileInput.files[0];
-            if (file.size > 10 * 1024 * 1024) {
-                showFormMessage('Image file must be under 10MB.', 'error');
-                return;
-            }
-            if (!file.type.startsWith('image/')) {
-                showFormMessage('Please upload an image file (JPG, PNG, GIF, WebP).', 'error');
-                return;
-            }
+        const wantsCapture = includeCaptureCheckbox ? includeCaptureCheckbox.checked : false;
+        const captureId = captureIdInput && captureIdInput.value ? captureIdInput.value.trim() : '';
+        if (wantsCapture && !captureId) {
+            showFormMessage('Launch capture first.', 'error');
+            return;
         }
 
         // Disable submit button while sending
@@ -301,6 +343,7 @@ function initContactForm() {
             if (response.ok) {
                 showFormMessage('Thank you for your message! We will contact you shortly.', 'success');
                 form.reset();
+                updateCaptureStatus();
             } else {
                 showFormMessage('Something went wrong. Please try again or call us directly.', 'error');
             }

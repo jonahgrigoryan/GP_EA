@@ -450,10 +450,19 @@
                             <textarea id="message" name="message" rows="5" required placeholder="Please tell us about your wound care needs or any questions you have..."></textarea>
                         </div>
                         <div class="form-group">
-                            <label for="image">Attach Image <span class="optional">(optional)</span></label>
-                            <input type="file" id="image" name="image" accept="image/*">
-                            <span class="form-hint">Max file size: 10MB. Accepted formats: JPG, PNG, GIF, WebP.</span>
+                            <label>
+                                <input type="checkbox" id="include-capture" name="include_capture" value="1">
+                                Add wound capture <span class="optional">(optional)</span>
+                            </label>
                         </div>
+                        <div class="form-group">
+                            <button type="button" id="launch-capture" class="btn btn--secondary btn--full">Launch iPhone Capture</button>
+                            <p id="capture-status" class="form-hint">No capture attached.</p>
+                        </div>
+                        <input type="hidden" id="capture-id" name="capture_id" value="">
+                        <input type="hidden" id="length-cm" name="length_cm" value="">
+                        <input type="hidden" id="width-cm" name="width_cm" value="">
+                        <input type="hidden" id="area-cm2" name="area_cm2_lxw" value="">
                         <button type="submit" class="btn btn--primary btn--full">Send Message</button>
                         <p class="form-disclaimer">By submitting this form, you consent to being contacted regarding wound care services. Your information will be kept confidential in accordance with our <a href='/privacy-policy'>Privacy Policy</a>.</p>
                     </form>

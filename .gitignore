@@ -1,0 +1,4 @@
+# Local Netlify folder
+.netlify
+.aws-phase1.env
+node_modules/
