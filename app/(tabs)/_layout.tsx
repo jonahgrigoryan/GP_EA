@@ -15,7 +15,7 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: colors.tint,
+        tabBarActiveTintColor: colors.primary,
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarStyle: {
@@ -32,7 +32,27 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="house.fill" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="checklist"
+        options={{
+          title: "Checklist",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="checklist" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="bookmarks"
+        options={{
+          title: "Bookmarks",
+          tabBarIcon: ({ color }) => (
+            <IconSymbol size={28} name="bookmark.fill" color={color} />
+          ),
         }}
       />
     </Tabs>
